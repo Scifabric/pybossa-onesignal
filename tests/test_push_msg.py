@@ -104,6 +104,26 @@ class TestPybossaOnesignal(object):
                                 headers=client.header,
                                 json=self.payload)
 
+    @patch('pbsonesignal.requests.post')
+    def test_push_msg_include_player_ids(self, mock):
+        """Test push_msg with array include_player_ids works."""
+        client = PybossaOneSignal(app_id="1", api_key="key")
+        fakeRequest = MagicMock()
+        fakeRequest.status_code = 200
+        fakeRequest.reason = 'OK'
+        fakeRequest.json.return_value = self.valid_notification
+        mock.return_value = fakeRequest
+        tmp = client.push_msg(include_player_ids=["1"])
+        assert tmp[0] == 200
+        assert tmp[1] == 'OK'
+        assert tmp[2] == self.valid_notification
+
+        self.payload['app_id'] = "1"
+        self.payload['include_player_ids'] = ["1"]
+
+        mock.assert_called_with(client.api_url, 
+                                headers=client.header,
+                                json=self.payload)
 
 
     @patch('pbsonesignal.requests.post')
