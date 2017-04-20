@@ -7,3 +7,5 @@
 *.ropeproject
 *docs/_build/
 env/
+dist/
+pybossa_onesignal.egg-info/
