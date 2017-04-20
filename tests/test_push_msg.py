@@ -32,6 +32,24 @@ class TestPybossaOnesignal(object):
 
     error_notification = {u'errors': ['an example error']}
 
+    payload = None
+
+    def setUp(self):
+        self.payload = {
+                        "included_segments": ["All"],
+                        "excluded_sements": [],
+                        "filters": [],
+                        "contents": {"en": "English Message"},
+                        "headings": {"en": "Heading"},
+                        "url": "https://yoursite.com/",
+                        "web_buttons": [{"id": "read-more-button",
+                                        "text": "Read more",
+                                        "icon": "http://i.imgur.com/MIxJp1L.png",
+                                        "url": "https://yoursite.com"}],
+                        "chrome_web_image": "https://yourimage.com",
+                        "chrome_web_icon": "https://image"}
+
+
     @patch('pbsonesignal.requests.post')
     def test_push_msg(self, mock):
         """Test push_msg works."""
@@ -45,6 +63,27 @@ class TestPybossaOnesignal(object):
         assert tmp[0] == 200
         assert tmp[1] == 'OK'
         assert tmp[2] == self.valid_notification
+
+    @patch('pbsonesignal.requests.post')
+    def test_push_msg_app_ids(self, mock):
+        """Test push_msg with array app_ids works."""
+        client = PybossaOneSignal(app_ids=["1", "2"], api_key="key")
+        fakeRequest = MagicMock()
+        fakeRequest.status_code = 200
+        fakeRequest.reason = 'OK'
+        fakeRequest.json.return_value = self.valid_notification
+        mock.return_value = fakeRequest
+        tmp = client.push_msg()
+        assert tmp[0] == 200
+        assert tmp[1] == 'OK'
+        assert tmp[2] == self.valid_notification
+
+        self.payload['app_ids'] = ["1", "2"]
+
+        mock.assert_called_with(client.api_url, 
+                                headers=client.header,
+                                json=self.payload)
+
 
     @patch('pbsonesignal.requests.post')
     @raises(CreateNotification)
