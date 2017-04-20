@@ -81,7 +81,7 @@ class TestPybossaOnesignal(object):
         self.payload['app_ids'] = ["1", "2"]
 
         mock.assert_called_with(client.api_url, 
-                                headers=client.header,
+                                headers=client.header("key"),
                                 json=self.payload)
 
     @patch('pbsonesignal.requests.post')
@@ -101,7 +101,7 @@ class TestPybossaOnesignal(object):
         self.payload['app_id'] = "1"
 
         mock.assert_called_with(client.api_url, 
-                                headers=client.header,
+                                headers=client.header("key"),
                                 json=self.payload)
 
     @patch('pbsonesignal.requests.post')
@@ -122,7 +122,7 @@ class TestPybossaOnesignal(object):
         self.payload['include_player_ids'] = ["1"]
 
         mock.assert_called_with(client.api_url, 
-                                headers=client.header,
+                                headers=client.header("key"),
                                 json=self.payload)
 
     @patch('pbsonesignal.requests.post')
@@ -143,7 +143,7 @@ class TestPybossaOnesignal(object):
         self.payload['send_after'] = "Thu Sep 24 2015 14:00:00 GMT-0700 (PDT)"
 
         mock.assert_called_with(client.api_url, 
-                                headers=client.header,
+                                headers=client.header("key"),
                                 json=self.payload)
 
     @patch('pbsonesignal.requests.post')
@@ -164,7 +164,7 @@ class TestPybossaOnesignal(object):
         self.payload['delayed_option'] = "last-active"
 
         mock.assert_called_with(client.api_url, 
-                                headers=client.header,
+                                headers=client.header("key"),
                                 json=self.payload)
 
     @patch('pbsonesignal.requests.post')
@@ -185,7 +185,7 @@ class TestPybossaOnesignal(object):
         self.payload['delivery_time_of_day'] = "9:00AM"
 
         mock.assert_called_with(client.api_url, 
-                                headers=client.header,
+                                headers=client.header("key"),
                                 json=self.payload)
 
     @patch('pbsonesignal.requests.post')
@@ -206,7 +206,7 @@ class TestPybossaOnesignal(object):
         self.payload['ttl'] = "259200"
 
         mock.assert_called_with(client.api_url, 
-                                headers=client.header,
+                                headers=client.header("key"),
                                 json=self.payload)
 
     @patch('pbsonesignal.requests.post')
@@ -227,7 +227,7 @@ class TestPybossaOnesignal(object):
         self.payload['priority'] = "10"
 
         mock.assert_called_with(client.api_url, 
-                                headers=client.header,
+                                headers=client.header("key"),
                                 json=self.payload)
 
     @patch('pbsonesignal.requests.post')
