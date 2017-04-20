@@ -36,10 +36,8 @@ class PybossaOneSignal(object):
     def __init__(self, api_key, app_id=None, app_ids=None, auth_key=None):
         """Initiate."""
         try:
-            self.header = {"Content-Type": "application/json; charset=utf-8",
-                           "Authorization": "Basic %s" % api_key}
-            self.header_user = {"Content-Type": "application/json; charset=utf-8",
-                                "Authorization": "Basic %s" % auth_key}
+            self.api_key = api_key
+            self.auth_key = auth_key
             if app_id is None and app_ids is None:
                 msg = "You should provide an app_id or an array of app_ids"
                 raise AppIdMissing(msg)
@@ -53,6 +51,12 @@ class PybossaOneSignal(object):
         except Exception as e:
             print "ERROR: %s: %s" % (type(e), e)
             raise e
+
+    def header(self, auth):
+        """Return proper Header for authenticating."""
+        return {"Content-Type": "application/json; charset=utf-8",
+                "Authorization": "Basic %s" % auth}
+
 
     def push_msg(self, contents={"en": "English Message"},
                  headings={"en": "Heading"},
@@ -110,7 +114,7 @@ class PybossaOneSignal(object):
                 payload['priority'] = priority
 
             req = requests.post(self.api_url,
-                                headers=self.header,
+                                headers=self.header(self.api_key),
                                 json=payload)
 
             response = req.json()
@@ -137,7 +141,7 @@ class PybossaOneSignal(object):
             payload.update(kwargs)
 
             req = requests.post(self.api_apps,
-                                headers=self.header_user,
+                                headers=self.header(self.auth_key),
                                 json=payload)
 
             response = req.json()
