@@ -16,13 +16,10 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with PYBOSSA.  If not, see <http://www.gnu.org/licenses/>.
 import json
-from collections import namedtuple
 from pbsonesignal import PybossaOneSignal
 from pbsonesignal.exceptions import *
 from nose.tools import raises
 from mock import patch, MagicMock
-
-FakeRequest = namedtuple('FakeRequest', ['text', 'status_code', 'headers'])
 
 
 class TestPybossaOnesignal(object):
