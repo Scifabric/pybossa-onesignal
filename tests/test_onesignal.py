@@ -65,3 +65,9 @@ class TestPybossaOnesignal(object):
     def test_init_no_api_key(self):
         """Test init without api_key."""
         PybossaOneSignal(app_id="1")
+
+    def test_proper_init(self):
+        """Test init adds header."""
+        client = PybossaOneSignal(app_id="1", api_key="key")
+        assert client.header['Content-Type'] == 'application/json; charset=utf-8'
+        assert client.header['Authorization'] == 'Basic key'
