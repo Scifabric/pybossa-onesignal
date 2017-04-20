@@ -1,0 +1,119 @@
+# -*- coding: utf8 -*-
+# This file is part of PYBOSSA.
+#
+# Copyright (C) 2017 Scifabric LTD.
+#
+# PYBOSSA is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# PYBOSSA is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with PYBOSSA.  If not, see <http://www.gnu.org/licenses/>.
+"""
+PYBOSSA module for sending Web PUSH notifications.
+
+This module exports:
+    * OneSignal Class: to create apps and send notifications.
+
+"""
+import requests
+from exceptions import *
+
+
+class PybossaOneSignal(object):
+
+    """General class for PybossaOneSignal."""
+
+    api_url = 'https://onesignal.com/api/v1/notifications'
+
+    def __init__(self, api_key, app_id=None, app_ids=None):
+        """Initiate."""
+        try:
+            self.header = {"Content-Type": "application/json; charset=utf-8",
+                           "Authorization": "Basic %s" % api_key}
+            if app_id is None and app_ids is None:
+                msg = "You should provide an app_id or an array of app_ids"
+                raise AppIdMissing(msg)
+            if app_id and app_ids:
+                msg = "You can only provide or an app_id or a list of app_ids"
+                raise AppIdDuplicate(msg)
+            if app_id:
+                self.app_ids = [app_id]
+            else:
+                self.app_ids = app_ids
+        except Exception as e:
+            print "ERROR: %s: %s" % (type(e), e)
+
+    def push_msg(self, contents={"en": "English Message"},
+                 headings={"en": "Heading"},
+                 launch_url="https://yoursite.com/",
+                 web_buttons=[{"id": "read-more-button",
+                               "text": "Read more",
+                               "icon": "http://i.imgur.com/MIxJp1L.png",
+                               "url": "https://yoursite.com"}],
+                 chrome_web_image="https://yourimage.com",
+                 chrome_web_icon="https://image",
+                 included_segments=["All"],
+                 excluded_sements=[],
+                 filters=[],
+                 include_player_ids=[],
+                 send_after=None,
+                 delayed_option=None,
+                 delivery_time_of_day=None,
+                 ttl=None,
+                 priority=None):
+        """Push notification message."""
+
+        try:
+            payload = {
+                       "included_segments": included_segments,
+                       "excluded_sements": excluded_sements,
+                       "filters": filters,
+                       "contents": contents,
+                       "headings": headings,
+                       "url": launch_url,
+                       "web_buttons": web_buttons,
+                       "chrome_web_image": chrome_web_image,
+                       "chrome_web_icon": chrome_web_icon}
+
+            if len(self.app_ids) == 1:
+                payload['app_id'] = self.app_ids[0]
+            else:
+                payload['app_ids'] = self.app_ids
+
+            if len(include_player_ids) > 0:
+                payload['include_player_ids'] = include_player_ids
+
+            if send_after:
+                payload['send_after'] = send_after
+
+            if delayed_option:
+                payload['delayed_option'] = delayed_option
+
+            if delivery_time_of_day:
+                payload['delivery_time_of_day'] = delivery_time_of_day
+
+            if ttl:
+                payload['ttl'] = ttl
+
+            if priority:
+                payload['priority'] = priority
+
+            req = requests.post(self.api_url,
+                                headers=self.header,
+                                json=payload)
+
+            response = req.json()
+
+            if 'errors' in response.keys():
+                for error in response['errors']:
+                    raise CreateNotification(error)
+            return (req.status_code, req.reason, req.json())
+        except CreateNotification as e:
+            print "ERROR: %s: %s" % (type(e), e)
