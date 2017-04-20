@@ -49,6 +49,7 @@ class PybossaOneSignal(object):
                 self.app_ids = app_ids
         except Exception as e:
             print "ERROR: %s: %s" % (type(e), e)
+            raise e
 
     def push_msg(self, contents={"en": "English Message"},
                  headings={"en": "Heading"},
@@ -117,3 +118,4 @@ class PybossaOneSignal(object):
             return (req.status_code, req.reason, req.json())
         except CreateNotification as e:
             print "ERROR: %s: %s" % (type(e), e)
+            raise e
