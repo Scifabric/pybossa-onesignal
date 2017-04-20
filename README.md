@@ -147,6 +147,20 @@ This is a string. Specify the priority. By default is normal. Use 10 to make it 
 
 ```python
 priority=None
+
+## create_app
+
+You can also create an app in OneSignal.com. Just run the following:
+
+**NOTE**: You need to start the client with your auth_key. Without that you will not
+be able to create apps.
+```
+```python
+from pbsonesignal import PybossaOneSignal
+
+client = PybossaOneSignal(api_key="yourkey", app_id="ID", auth_key="yourkey")
+
+client.create_app('name_app', 'https://yourdoamin.com', 'https://yourdomain/icon.png')
 ```
 
 ## Exceptions

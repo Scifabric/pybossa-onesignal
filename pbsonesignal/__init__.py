@@ -31,12 +31,13 @@ class PybossaOneSignal(object):
     """General class for PybossaOneSignal."""
 
     api_url = 'https://onesignal.com/api/v1/notifications'
+    api_apps = 'https://onesignal.com/api/v1/apps'
 
-    def __init__(self, api_key, app_id=None, app_ids=None):
+    def __init__(self, api_key, app_id=None, app_ids=None, auth_key=None):
         """Initiate."""
         try:
-            self.header = {"Content-Type": "application/json; charset=utf-8",
-                           "Authorization": "Basic %s" % api_key}
+            self.api_key = api_key
+            self.auth_key = auth_key
             if app_id is None and app_ids is None:
                 msg = "You should provide an app_id or an array of app_ids"
                 raise AppIdMissing(msg)
@@ -50,6 +51,12 @@ class PybossaOneSignal(object):
         except Exception as e:
             print "ERROR: %s: %s" % (type(e), e)
             raise e
+
+    def header(self, auth):
+        """Return proper Header for authenticating."""
+        return {"Content-Type": "application/json; charset=utf-8",
+                "Authorization": "Basic %s" % auth}
+
 
     def push_msg(self, contents={"en": "English Message"},
                  headings={"en": "Heading"},
@@ -106,8 +113,10 @@ class PybossaOneSignal(object):
             if priority:
                 payload['priority'] = priority
 
+            headers = self.header(self.api_key)
+
             req = requests.post(self.api_url,
-                                headers=self.header,
+                                headers=headers,
                                 json=payload)
 
             response = req.json()
@@ -119,3 +128,33 @@ class PybossaOneSignal(object):
         except CreateNotification as e:
             print "ERROR: %s: %s" % (type(e), e)
             raise e
+
+    def create_app(self, name,
+                   chrome_web_origin,
+                   chrome_web_default_notification_icon,
+                   **kwargs):
+        """Create a OneSignal app."""
+        try:
+            payload = dict(name=name,
+                           chrome_web_origin=chrome_web_origin,
+                           chrome_web_default_notification_icon=chrome_web_default_notification_icon,
+                           )
+
+            payload.update(kwargs)
+
+            headers = self.header(self.auth_key)
+
+            req = requests.post(self.api_apps,
+                                headers=headers,
+                                json=payload)
+
+            response = req.json()
+
+            if 'errors' in response.keys():
+                for error in response['errors']:
+                    raise CreateApp(error)
+            return (req.status_code, req.reason, req.json())
+        except CreateApp as e:
+            print "ERROR: %s: %s" % (type(e), e)
+            raise e
+
