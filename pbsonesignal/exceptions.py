@@ -25,7 +25,7 @@ This module exports:
 """
 
 __all__ = ['AppIdsMissing', 'AppIdMissing', 'ApiKeyMissing', 'AppIdDuplicate',
-           'CreateNotification']
+           'CreateNotification', 'CreateApp']
 
 
 class AppIdMissing(Exception):
@@ -45,4 +45,8 @@ class ApiKeyMissing(Exception):
 
 
 class CreateNotification(Exception):
+    pass
+
+
+class CreateApp(Exception):
     pass
