@@ -113,8 +113,10 @@ class PybossaOneSignal(object):
             if priority:
                 payload['priority'] = priority
 
+            headers = self.header(self.api_key)
+
             req = requests.post(self.api_url,
-                                headers=self.header(self.api_key),
+                                headers=headers,
                                 json=payload)
 
             response = req.json()
@@ -140,8 +142,10 @@ class PybossaOneSignal(object):
 
             payload.update(kwargs)
 
+            headers = self.header(self.auth_key)
+
             req = requests.post(self.api_apps,
-                                headers=self.header(self.auth_key),
+                                headers=headers,
                                 json=payload)
 
             response = req.json()
