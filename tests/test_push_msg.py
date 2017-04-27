@@ -46,6 +46,23 @@ class TestPybossaOnesignal(object):
                         "chrome_web_image": "https://yourimage.com",
                         "chrome_web_icon": "https://image"}
 
+    @raises(AppIdMissing)
+    def test_push_msg_no_app_id(self):
+        """Test push_msg without app_id."""
+        client = PybossaOneSignal(api_key="something")
+        client.push_msg()
+
+    @raises(AppIdMissing)
+    def test_push_msg_no_app_ids(self):
+        """Test push_msg without app_ids."""
+        client = PybossaOneSignal(api_key="something")
+        client.push_msg()
+
+    @raises(ApiKeyMissing)
+    def test_push_msg_no_api_key(self):
+        """Test push_msg without api_key."""
+        client = PybossaOneSignal(app_id="1", auth_key="something")
+        client.push_msg()
 
     @patch('pbsonesignal.requests.post')
     def test_push_msg(self, mock):

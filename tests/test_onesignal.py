@@ -46,25 +46,12 @@ class TestPybossaOnesignal(object):
         for k in err.keys():
             assert err[k] == res[k], err
 
-    @raises(AppIdMissing)
-    def test_init_no_app_id(self):
-        """Test init without app_id."""
-        PybossaOneSignal(api_key="something")
-
-    @raises(AppIdMissing)
-    def test_init_no_app_ids(self):
-        """Test init without app_ids."""
-        PybossaOneSignal(api_key="something")
 
     @raises(AppIdDuplicate)
     def test_init_no_app_id_duplicates(self):
         """Test init using app_id and app_ids."""
         PybossaOneSignal(app_id="1", app_ids=["a"], api_key="something")
 
-    @raises(TypeError)
-    def test_init_no_api_key(self):
-        """Test init without api_key."""
-        PybossaOneSignal(app_id="1")
 
     def test_headers(self):
         """Test headers method."""

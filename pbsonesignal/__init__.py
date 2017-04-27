@@ -33,14 +33,16 @@ class PybossaOneSignal(object):
     api_url = 'https://onesignal.com/api/v1/notifications'
     api_apps = 'https://onesignal.com/api/v1/apps'
 
-    def __init__(self, api_key, app_id=None, app_ids=None, auth_key=None):
+    def __init__(self, api_key=None, app_id=None, app_ids=None, auth_key=None):
         """Initiate."""
         try:
+            if api_key is None and auth_key is None:
+                msg = "Provide some credentials API key or AUTH key."
+                raise ApiAuthKeysMissing
             self.api_key = api_key
             self.auth_key = auth_key
-            if app_id is None and app_ids is None:
-                msg = "You should provide an app_id or an array of app_ids"
-                raise AppIdMissing(msg)
+            self.app_id = app_id
+            self.app_ids = app_ids
             if app_id and app_ids:
                 msg = "You can only provide or an app_id or a list of app_ids"
                 raise AppIdDuplicate(msg)
@@ -79,6 +81,14 @@ class PybossaOneSignal(object):
         """Push notification message."""
 
         try:
+            if self.api_key is None:
+                msg = "API key is missing"
+                raise ApiKeyMissing(msg)
+
+            if self.app_id is None and self.app_ids is None:
+                msg = "You should provide an app_id or an array of app_ids"
+                raise AppIdMissing(msg)
+
             payload = {
                        "included_segments": included_segments,
                        "excluded_sements": excluded_sements,
@@ -135,6 +145,10 @@ class PybossaOneSignal(object):
                    **kwargs):
         """Create a OneSignal app."""
         try:
+            if self.auth_key is None:
+                msg = "Auth key missing."
+                raise AuthKeyMissing(msg)
+
             payload = dict(name=name,
                            chrome_web_origin=chrome_web_origin,
                            chrome_web_default_notification_icon=chrome_web_default_notification_icon,
