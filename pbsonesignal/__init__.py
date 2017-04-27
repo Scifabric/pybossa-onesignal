@@ -59,7 +59,6 @@ class PybossaOneSignal(object):
         return {"Content-Type": "application/json; charset=utf-8",
                 "Authorization": "Basic %s" % auth}
 
-
     def push_msg(self, contents={"en": "English Message"},
                  headings={"en": "Heading"},
                  launch_url="https://yoursite.com/",
