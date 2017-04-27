@@ -52,6 +52,10 @@ class TestPybossaOnesignal(object):
         """Test init using app_id and app_ids."""
         PybossaOneSignal(app_id="1", app_ids=["a"], api_key="something")
 
+    @raises(ApiAuthKeysMissing)
+    def test_create_client(self):
+        """Test create client without keys."""
+        PybossaOneSignal()
 
     def test_headers(self):
         """Test headers method."""
