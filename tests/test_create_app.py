@@ -67,6 +67,11 @@ class TestPybossaOnesignal(object):
                         "chrome_web_image": "https://yourimage.com",
                         "chrome_web_icon": "https://image"}
 
+    @raises(AuthKeyMissing)
+    def test_create_app_no_auth_key(self):
+        """Test create_app without auth_key."""
+        client = PybossaOneSignal(api_key="key")
+        client.create_app('name', 'https://scifabric.com', 'https://scifabric.com/img')
 
     @patch('pbsonesignal.requests.post')
     def test_create_app(self, mock):
