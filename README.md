@@ -17,6 +17,17 @@ client.push_msg(contents={"en": "Your message in English", "es": "Tu mensaje en 
 ```
 
 
+In the case that you want to create a new app, just do the following:
+
+```python
+from pbsonesignal import PybossaOneSignal
+
+client = PybossaOneSignal(auth_key="yourkey")
+
+client.create_app('name', 'https://yoursite.com', 'https://yoursite.com/icon')
+```
+
+
 ## Arguments for push_msg
 
 The following is a list of all the arguments you can use with this client:
@@ -161,12 +172,46 @@ client = PybossaOneSignal(api_key="yourkey", app_id="ID", auth_key="yourkey")
 client.create_app('name_app', 'https://yourdoamin.com', 'https://yourdomain/icon.png')
 ```
 
+
+## Arguments for create_app
+
+You can use the following arguments for this method.
+
+### name
+
+This is a string. The name of the app you will be creating in OneSignal.
+
+```python
+name='yourappname'
+```
+
+### chrome_web_origin
+
+This is a string. The URL of the site that you will be linking to the app.
+
+```python
+chrome_web_origin='https://yoursite.com'
+```
+
+**WARNING**: Read their docs, but you need **full HTTPS in your site** so this can work.
+
+### chrome_web_default_notification_icon
+
+This is a string. The URL of the default notification icon
+
+```python
+chrome_web_default_notification_icon='https://yoursite.com/assets/img/icon.png'
+```
+
+**WARNING**: Read their docs, but you need **full HTTPS in your site** so this can work.
+
+
 ## Exceptions
 
-If you build the wrong push message, you will get in the console and also an exception with information about it.
+If you build the wrong push message or you create the wrong app, you will get in the console and also an exception with information about it.
 
 ## Copyright / License
-Copyright 2017 SciFabric LTD.
+Copyright 2017 Scifabric LTD.
 
 Source Code License: The GNU Affero General Public License, either version 3 of the License or (at your option) any later version. (see COPYING file)
 
