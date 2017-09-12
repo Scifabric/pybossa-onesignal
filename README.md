@@ -1,5 +1,8 @@
 # PYBOSSA OneSignal library
 [![Build Status](https://travis-ci.org/Scifabric/pybossa-onesignal.svg?branch=master)](https://travis-ci.org/Scifabric/pybossa-onesignal) [![Coverage Status](https://coveralls.io/repos/github/Scifabric/pybossa-onesignal/badge.svg?branch=master)](https://coveralls.io/github/Scifabric/pybossa-onesignal?branch=master) [![Code Health](https://landscape.io/github/Scifabric/pybossa-onesignal/master/landscape.svg?style=flat)](https://landscape.io/github/Scifabric/pybossa-onesignal/master)
+[![Python 2.7](https://img.shields.io/badge/python-2.7-green.svg)](https://pypi.python.org/pypi/pybossa-onesignal/)
+[![Python 3.5](https://img.shields.io/badge/python-3.5-blue.svg)](https://pypi.python.org/pypi/pybossa-onesignal/)
+[![Python 3.6](https://img.shields.io/badge/python-3.6-orange.svg)](https://pypi.python.org/pypi/pybossa-onesignal/)
 
 ## Intro
 
