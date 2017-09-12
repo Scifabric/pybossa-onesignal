@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pybossa-onesignal',
-    version='1.0',
+    version='1.1',
     packages=find_packages(),
     install_requires=['requests>=0.13.0'],
     # metadata for upload to PyPI
