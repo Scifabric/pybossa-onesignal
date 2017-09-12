@@ -23,7 +23,7 @@ This module exports:
 
 """
 import requests
-from exceptions import *
+from .exceptions import *
 
 
 class PybossaOneSignal(object):
@@ -51,7 +51,7 @@ class PybossaOneSignal(object):
             else:
                 self.app_ids = app_ids
         except Exception as e:
-            print "ERROR: %s: %s" % (type(e), e)
+            print("ERROR: %s: %s" % (type(e), e))
             raise e
 
     def header(self, auth):
@@ -130,12 +130,12 @@ class PybossaOneSignal(object):
 
             response = req.json()
 
-            if 'errors' in response.keys():
+            if 'errors' in list(response.keys()):
                 for error in response['errors']:
                     raise CreateNotification(error)
             return (req.status_code, req.reason, req.json())
         except CreateNotification as e:
-            print "ERROR: %s: %s" % (type(e), e)
+            print("ERROR: %s: %s" % (type(e), e))
             raise e
 
     def create_app(self, name,
@@ -163,11 +163,11 @@ class PybossaOneSignal(object):
 
             response = req.json()
 
-            if 'errors' in response.keys():
+            if 'errors' in list(response.keys()):
                 for error in response['errors']:
                     raise CreateApp(error)
             return (req.status_code, req.reason, req.json())
         except CreateApp as e:
-            print "ERROR: %s: %s" % (type(e), e)
+            print("ERROR: %s: %s" % (type(e), e))
             raise e
 
